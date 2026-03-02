@@ -80,13 +80,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // CÍRCULOS
     dibujaCirculo(60, 70, 8, COLORES.amarillo);
-    dibujaCirculo(350, 80, 8, COLORES.amarillo);
-    dibujaCirculo(380, 120, 8, COLORES.amarillo);
+    dibujaCirculo(280, 80, 8, COLORES.amarillo);
+    dibujaCirculo(350, 120, 8, COLORES.amarillo);
     dibujaCirculo(40, 230, 8, COLORES.amarillo);
 
     // CUADRADOS
     dibujaRect(360, 60, 15, 15, COLORES.azul);
-    dibujaRect(390, 200, 15, 15, COLORES.azul);
+    dibujaRect(366, 200, 15, 15, COLORES.azul);
     dibujaRect(80, 260, 15, 15, COLORES.azul);
     dibujaRect(70, 110, 15, 15, COLORES.azul);
 
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
     dibujaTriangulo(110, 60, 100, 80, 120, 80, COLORES.verde);
     dibujaTriangulo(20, 120, 10, 140, 30, 140, COLORES.verde);
     dibujaTriangulo(380, 250, 370, 270, 390, 270, COLORES.verde);
-    dibujaTriangulo(330, 300, 320, 320, 340, 320, COLORES.verde);
+
     // ===== PELO =====
     const radioPelo = 24;
     const offsetX = 78;
@@ -123,49 +123,96 @@ document.addEventListener("DOMContentLoaded", function() {
     dibujaCirculo(cx-30,cy-20,5,COLORES.negro);
     dibujaCirculo(cx+30,cy-20,5,COLORES.negro);
 
+    function dibujarBoca() {
 
-  function dibujarBoca() {
+    const centerX = cx;
+    const centerY = cy + 35; // debajo de la nariz
 
-    const bocaY = cy + 45;     // debajo de la nariz
-    const ancho = 35;          // mitad del ancho
-    const alto = 25;           // altura inferior
-    const altoSuperior = 35;   // curva superior
+    let mouthWidth = 90;
+    let mouthHeightBottom = 40;
 
     ctx.beginPath();
 
-    ctx.moveTo(cx - ancho, bocaY);
+    // Comisura izquierda
+    ctx.moveTo(centerX - mouthWidth / 2, centerY);
 
-    // Curva superior
+    // Curva superior (más suave)
     ctx.bezierCurveTo(
-        cx - ancho, bocaY + altoSuperior,
-        cx + ancho, bocaY + altoSuperior,
-        cx + ancho, bocaY
+        centerX - mouthWidth / 4, centerY - 5,
+        centerX + mouthWidth / 4, centerY - 5,
+        centerX + mouthWidth / 2, centerY
     );
 
-    // Curva inferior
+    // Curva inferior (más profunda)
     ctx.bezierCurveTo(
-        cx + ancho, bocaY - alto,
-        cx - ancho, bocaY - alto,
-        cx - ancho, bocaY
+        centerX + mouthWidth / 2 + 10, centerY + mouthHeightBottom,
+        centerX - mouthWidth / 2 - 10, centerY + mouthHeightBottom,
+        centerX - mouthWidth / 2, centerY
     );
 
     ctx.closePath();
-
     ctx.fillStyle = COLORES.rojo;
     ctx.fill();
-
     ctx.strokeStyle = COLORES.negro;
     ctx.stroke();
 
-    // Dientes
-    ctx.fillStyle = COLORES.blanco;
-    ctx.fillRect(cx - 15, bocaY - 10, 30, 18);
+    // ===== DIENTES =====
+    let toothWidth = 16;
+    let toothHeight = 20;
+    let toothSpacing = 4;
 
+    ctx.fillStyle = COLORES.blanco;
+    ctx.strokeStyle = COLORES.negro;
+    ctx.lineWidth = 1;
+
+    // Diente izquierdo
+    ctx.fillRect(
+        centerX - toothWidth - toothSpacing / 2,
+        centerY + 10,
+        toothWidth,
+        toothHeight
+    );
+    ctx.strokeRect(
+        centerX - toothWidth - toothSpacing / 2,
+        centerY + 10,
+        toothWidth,
+        toothHeight
+    );
+
+    // Diente derecho
+    ctx.fillRect(
+        centerX + toothSpacing / 2,
+        centerY + 10,
+        toothWidth,
+        toothHeight
+    );
+    ctx.strokeRect(
+        centerX + toothSpacing / 2,
+        centerY + 10,
+        toothWidth,
+        toothHeight
+    );
+
+    // ===== Línea curva de sonrisa =====
     ctx.beginPath();
-    ctx.moveTo(cx, bocaY - 10);
-    ctx.lineTo(cx, bocaY + 8);
+
+    ctx.moveTo(centerX - mouthWidth / 2 + 10, centerY + 20);
+
+    ctx.bezierCurveTo(
+        centerX - mouthWidth / 4,
+             centerY + 5,
+              centerX + mouthWidth / 4,
+               centerY + 5,
+                centerX + mouthWidth / 2 - 10,
+                 centerY + 18
+    );
+
+    ctx.strokeStyle = COLORES.negro;
+    ctx.lineWidth = 2;
     ctx.stroke();
+
 }
+  
      // Nariz
     dibujaCirculo(cx,cy,18,COLORES.rojo);
 
