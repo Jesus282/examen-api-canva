@@ -18,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function() {
         negro: 'black'
     };
 
+    
+
     ctx.lineWidth = COLORES.grosorBorde;
     ctx.strokeStyle = COLORES.borde;
 
@@ -74,7 +76,25 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const cx = W / 2;
     const cy = 200;
+    // ===== FIGURAS DE FONDO =====
 
+    // CÍRCULOS
+    dibujaCirculo(60, 70, 8, COLORES.amarillo);
+    dibujaCirculo(350, 80, 8, COLORES.amarillo);
+    dibujaCirculo(380, 120, 8, COLORES.amarillo);
+    dibujaCirculo(40, 230, 8, COLORES.amarillo);
+
+    // CUADRADOS
+    dibujaRect(360, 60, 15, 15, COLORES.azul);
+    dibujaRect(390, 200, 15, 15, COLORES.azul);
+    dibujaRect(80, 260, 15, 15, COLORES.azul);
+    dibujaRect(70, 110, 15, 15, COLORES.azul);
+
+    // TRIÁNGULOS
+    dibujaTriangulo(110, 60, 100, 80, 120, 80, COLORES.verde);
+    dibujaTriangulo(20, 120, 10, 140, 30, 140, COLORES.verde);
+    dibujaTriangulo(380, 250, 370, 270, 390, 270, COLORES.verde);
+    dibujaTriangulo(330, 300, 320, 320, 340, 320, COLORES.verde);
     // ===== PELO =====
     const radioPelo = 24;
     const offsetX = 78;
@@ -104,49 +124,53 @@ document.addEventListener("DOMContentLoaded", function() {
     dibujaCirculo(cx+30,cy-20,5,COLORES.negro);
 
 
-    // Boca (ellipse completa)
-   function dibujarBoca() {
+  function dibujarBoca() {
+
+    const bocaY = cy + 45;     // debajo de la nariz
+    const ancho = 35;          // mitad del ancho
+    const alto = 25;           // altura inferior
+    const altoSuperior = 35;   // curva superior
 
     ctx.beginPath();
 
-    // Punto inicial (lado izquierdo)
-    ctx.moveTo(210, 240);
+    ctx.moveTo(cx - ancho, bocaY);
 
     // Curva superior
     ctx.bezierCurveTo(
-        210, 280,   // control izquierdo
-        290, 280,   // control derecho
-        290, 240    // punto final
+        cx - ancho, bocaY + altoSuperior,
+        cx + ancho, bocaY + altoSuperior,
+        cx + ancho, bocaY
     );
 
     // Curva inferior
     ctx.bezierCurveTo(
-        290, 210,   // control derecho inferior
-        210, 210,   // control izquierdo inferior
-        210, 240    // regreso al inicio
+        cx + ancho, bocaY - alto,
+        cx - ancho, bocaY - alto,
+        cx - ancho, bocaY
     );
 
     ctx.closePath();
-    ctx.fillStyle = "red";
+
+    ctx.fillStyle = COLORES.rojo;
     ctx.fill();
 
-    // CONTORNO NEGRO
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = COLORES.negro;
     ctx.stroke();
 
-    // DIENTES
-    ctx.fillStyle = "white";
-    ctx.fillRect(235, 225, 30, 20);
+    // Dientes
+    ctx.fillStyle = COLORES.blanco;
+    ctx.fillRect(cx - 15, bocaY - 10, 30, 18);
 
-    // Línea divisoria dientes
     ctx.beginPath();
-    ctx.moveTo(250, 225);
-    ctx.lineTo(250, 245);
+    ctx.moveTo(cx, bocaY - 10);
+    ctx.lineTo(cx, bocaY + 8);
     ctx.stroke();
 }
      // Nariz
     dibujaCirculo(cx,cy,18,COLORES.rojo);
+
+    //llamada función boca
+    dibujarBoca();
 
     // Dientes
     /*dibujaRect(cx-11, cy+40, 10, 12, COLORES.blanco);
