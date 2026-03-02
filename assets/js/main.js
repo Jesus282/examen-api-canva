@@ -50,13 +50,27 @@ document.addEventListener("DOMContentLoaded", function() {
         ctx.stroke();
     }
 
-    function dibujaSemicirculo(x,y,r,color){
-        ctx.beginPath();
-        ctx.arc(x,y,r,Math.PI,0);
-        ctx.fillStyle=color;
-        ctx.fill();
-        ctx.stroke();
+    function dibujaSemicirculo(x, y, radio, color, direccion = "arriba") {
+
+    ctx.beginPath();
+
+    if (direccion === "arriba") {
+        // Semicírculo mirando hacia arriba
+        ctx.arc(x, y, radio, 0, Math.PI);
+    } else {
+        // Semicírculo mirando hacia abajo
+        ctx.arc(x, y, radio, Math.PI, 0);
     }
+
+    ctx.lineTo(x - radio, y);
+    ctx.closePath();
+
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+}
 
     const cx = W / 2;
     const cy = 200;
@@ -139,20 +153,9 @@ document.addEventListener("DOMContentLoaded", function() {
     dibujaRect(cx,   cy+40, 10, 12, COLORES.blanco);*/
 
     // ===== CUELLO =====
-    const bodyTop = 330;
-    const ruffleY = bodyTop - 40;
-
-    const coloresCuello = [
-        COLORES.rojo,
-        COLORES.amarillo,
-        COLORES.verde,
-        COLORES.azul,
-        COLORES.rojo
-    ];
-
-    for(let i=0;i<5;i++){
-        dibujaSemicirculo(cx-80 + i*40, ruffleY, 20, coloresCuello[i]);
-    }
+    const bodyTop = 305;
+    const ruffleY = bodyTop - 35;
+    const offsetY = 15; // baja la figura 15px
 
     // ===== CUERPO =====
     dibujaRect(cx-80, bodyTop, 160, 170, COLORES.blanco);
@@ -162,15 +165,11 @@ document.addEventListener("DOMContentLoaded", function() {
         dibujaRect(cx-80 + i*(160/7), bodyTop, 160/7, 170, COLORES.azul);
     }
 
-    // ===== MOÑO =====
-    dibujaTriangulo(cx-10,bodyTop-10, cx-60,bodyTop+20, cx-10,bodyTop+30, COLORES.azul);
-    dibujaTriangulo(cx+10,bodyTop-10, cx+60,bodyTop+20, cx+10,bodyTop+30, COLORES.azul);
-    dibujaRect(cx-12,bodyTop-5,24,25,COLORES.rojo);
 
     // ===== BOTONES =====
-    dibujaCirculo(cx,bodyTop+50,10,COLORES.amarillo);
-    dibujaCirculo(cx,bodyTop+100,10,COLORES.amarillo);
-    dibujaCirculo(cx,bodyTop+150,10,COLORES.amarillo);
+    dibujaCirculo(cx,bodyTop+50,15,COLORES.amarillo);
+    dibujaCirculo(cx,bodyTop+85,15,COLORES.amarillo);
+    dibujaCirculo(cx,bodyTop+120,15,COLORES.amarillo);
 
     // ===== BRAZOS =====
     dibujaRect(cx-120,bodyTop+20,40,160,COLORES.verde);
@@ -186,5 +185,45 @@ document.addEventListener("DOMContentLoaded", function() {
     // ===== PIES =====
     dibujaRect(cx-120,bodyTop+320,100,35,COLORES.rojo);
     dibujaRect(cx+20,bodyTop+320,100,35,COLORES.rojo);
+
+    const coloresCuello = [
+        COLORES.rojo,
+        COLORES.amarillo,
+        COLORES.verde,
+        COLORES.azul,
+        COLORES.rojo
+    ];
+
+    for(let i=0;i<5;i++){
+        dibujaSemicirculo(cx-80 + i*40, ruffleY + offsetY, 25, coloresCuello[i]);
+    }
+
+    for(let i=0;i<5;i++){
+        dibujaSemicirculo(cx-80 + i*40, ruffleY, 25, coloresCuello[i]);
+    }
+    
+    // ===== MOÑO =====
+    const centroMoñoY = bodyTop - 5 + 12.5;
+
+    // Triángulo izquierdo
+    dibujaTriangulo(
+        cx , centroMoñoY,   // punta (pegada al rectángulo)
+        cx - 60, centroMoñoY - 20, // base superior
+        cx - 60, centroMoñoY + 20, // base inferior
+        COLORES.azul
+    );
+
+    // Triángulo derecho
+    dibujaTriangulo(
+        cx , centroMoñoY,   // punta
+        cx + 60, centroMoñoY - 20,
+        cx + 60, centroMoñoY + 20,
+        COLORES.azul
+    );
+
+    // Rectángulo central
+    dibujaRect(cx - 12, bodyTop - 5, 24, 25, COLORES.rojo);
+
+    
 
 });
